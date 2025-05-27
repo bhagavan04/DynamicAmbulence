@@ -13,14 +13,14 @@ bool is_csv_file(const char *filename) {
 }
 
 // Read matrix from .txt or .csv
-void readMatrixFromFile(int matrix[15][15], const char *filename) {
+void readMatrixFromFile(int matrix[15][15], const char *filename, int hospitals) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
         printf("Error opening file %s for reading.\n", filename);
         exit(EXIT_FAILURE);
     }
     char line[512];
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < hospitals; i++) {
         if (!fgets(line, sizeof(line), file)) {
             printf("Error reading matrix from file %s.\n", filename);
             fclose(file);
@@ -32,14 +32,14 @@ void readMatrixFromFile(int matrix[15][15], const char *filename) {
             token = strtok(line, ",\n");
         else
             token = strtok(line, " \n");
-        while (token && j < 15) {
+        while (token && j < hospitals) {
             matrix[i][j++] = atoi(token);
             if (is_csv_file(filename))
                 token = strtok(NULL, ",\n");
             else
                 token = strtok(NULL, " \n");
         }
-        if (j != 15) {
+        if (j != hospitals) {
             printf("Matrix row %d in %s does not have 15 columns.\n", i+1, filename);
             fclose(file);
             exit(EXIT_FAILURE);
@@ -49,14 +49,14 @@ void readMatrixFromFile(int matrix[15][15], const char *filename) {
 }
 
 // Read hospital names from .txt or .csv
-void readHospitalNamesFromFile(char hospital_names[15][50], const char *filename) {
+void readHospitalNamesFromFile(char hospital_names[15][50], const char *filename, int hospitals) {
     FILE *file = fopen(filename, "r");
     if (file == NULL) {
         printf("Error opening file %s for reading.\n", filename);
         exit(EXIT_FAILURE);
     }
     char line[256];
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < hospitals; i++) {
         if (!fgets(line, sizeof(line), file)) {
             printf("Error reading hospital names from file %s.\n", filename);
             fclose(file);
